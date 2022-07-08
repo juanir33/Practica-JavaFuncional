@@ -1,6 +1,8 @@
 package calculadora;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 import org.jboss.logging.Logger;
@@ -19,40 +21,47 @@ public class Calculator {
 
     }
     public void multiplicar(List<Integer> list1, List<Integer> list2){
+       int  limit= Math.min(list1.size(), list2.size());
 
-        if(list1.size() > list2.size()){
-            throw new IllegalArgumentException("Las listas deben ser del mismo tamaño");}
-
-       list1.stream().map(el -> {
+       list1.stream().limit(limit).map(el -> {
             int  i = list1.indexOf(el);
            return el * list2.get(i);
        }).forEach(ele -> logger.info("La multiplicacion es igual a: \n"+
                ele));
-
-
-
-
-
-
-
     }
     public void restar(List<Integer> list1, List<Integer> list2){
-        list1.stream().map(el -> {
+        int  limit= Math.min(list1.size(), list2.size());
+
+        list1.stream().limit(limit).map(el -> {
             int  i = list1.indexOf(el);
             return el - list2.get(i);
         }).forEach(ele -> logger.info("La resta es igual a: \n"+
                 ele));
     }
+
+    /**
+     * En este metodo, la solucion que utilice para manejar la division por zero fue un operador ternario
+     * mostrando el mjs en cada item que sea 0; quise implementar monadas pero no lo logre. Estimo que esta manera
+     * de hacerlo no es la correcta.
+     *
+     */
     public void dividir(List<Integer> list1, List<Integer> list2){
-        if(list1.contains(0)){throw
-                new IllegalArgumentException("El array contiene zeros, es posible que no se pueda realizar la operacion");}
-
-        list1.stream().map(el -> {
+        int  limit= Math.min(list1.size(), list2.size());
+       list1.stream().limit(limit).map(el -> {
             int  i = list1.indexOf(el);
-            return el / list2.get(i);
+            return list2.get(i)==0? "No se puede dividir por 0": el/list2.get(i);
         }).forEach(ele -> logger.info("La division es igual a: \n"+
-                ele));
+               ele));
 
+    }
+
+    public void modulo(List<Integer> list1, List<Integer> list2){
+        int  limit= Math.min(list1.size(), list2.size());
+        list1.stream().limit(limit).map(el -> {
+            int  i = list1.indexOf(el);
+            return list2.get(i)==0? "No se puede dividir por 0": el%list2.get(i);
+        }).forEach(ele -> logger.info("El modulo es igual a: \n"+
+                ele));
 
     }
 
